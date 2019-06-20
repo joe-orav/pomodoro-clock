@@ -52,20 +52,29 @@ class PomodoroClock extends React.Component {
         var seconds = Number.parseInt(timerArr[1]);
         
         if(minutes == 0 && seconds == 0) {
-            clearInterval(intervalId);
-        } else if(seconds == 0) {
-            seconds = 59;
-            minutes -= 1;
-        } else {
-            seconds -= 1;
-        }
+            var nextStep = this.state.step == SESSION ? BREAK: SESSION;
+            var currentTimeRemaining = (nextStep == SESSION ? this.state.sessionLength: this.state.breakLength);
+            
+            this.setState({
+                step: nextStep,
+                timeRemaining: (currentTimeRemaining < 10 ? "0" + currentTimeRemaining : currentTimeRemaining) + ":00"
+            });
 
-        minutes = minutes < 10 ? "0" + minutes: minutes;
-        seconds = seconds < 10 ? "0" + seconds: seconds;
+        } else {
+            if(seconds == 0) {
+                seconds = 59;
+                minutes -= 1;
+            } else {
+                seconds -= 1;
+            }
     
-        this.setState({
-            timeRemaining: minutes + ":" + seconds
-        })
+            minutes = minutes < 10 ? "0" + minutes: minutes;
+            seconds = seconds < 10 ? "0" + seconds: seconds;
+        
+            this.setState({
+                timeRemaining: minutes + ":" + seconds
+            })
+        }
     }
 
     handleTimerSettings(step, increment) {
