@@ -1,18 +1,16 @@
-const SESSION = {label: "Session", time: 25};
-const BREAK = {label: "Break", time: 5};
-
 let intervalId;
 
+
 const PomodoroStep = props => {
-    let stepToLower = props.step.label.toLowerCase();
+    var labelToLower = props.label.toLowerCase();
 
     return (
-        <p id={stepToLower + "-label"}>
-            {"Set " + props.step.label + " Length"} 
-            <a href="#" id={stepToLower + "-increment"} onClick={() => props.onClick(true)}>+</a>
-                <span id={stepToLower + "-length"}>{props.step.time}</span>
-            <a href="#" id={stepToLower + "-decrement"} onClick={() => props.onClick(false)}>-</a>
-        </p>
+        <div>
+            <p id={labelToLower + "-label"}>{"Set " + props.label + " Length"}</p>
+            <button id={labelToLower + "-increment"}>+</button>
+            <p id={labelToLower + "-length"}>{props.length}</p>
+            <button id={labelToLower + "-decrement"}>-</button>
+        </div>
     )
 }
 
@@ -20,18 +18,19 @@ class PomodoroClock extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            timeRemaining: "25:00",
-            step: SESSION,
-            timerRunning: false
+            timerRunning: false,
+            label: "Session",
+            sessionTime: 25,
+            breakTime: 5,
+            timeRemaining: formatTime(25)
         }
         this.handleTimerState = this.handleTimerState.bind(this);
         this.handleTimerUpdate = this.handleTimerUpdate.bind(this);
-        this.handleTimerSettings = this.handleTimerSettings.bind(this);
         this.handleReset = this.handleReset.bind(this);
     }
 
     handleTimerState() {
-        if(this.state.timerRunning) {
+        if (this.state.timerRunning) {
             this.setState({
                 timerRunning: false
             });
@@ -45,19 +44,24 @@ class PomodoroClock extends React.Component {
     }
 
     handleTimerUpdate() {
-        let timerArr = this.state.timeRemaining.split(":");
-        var minutes = Number.parseInt(timerArr[0]);
-        var seconds = Number.parseInt(timerArr[1]);
-        
-        if(minutes == 0 && seconds == 0) {
-            var nextStep = this.state.step == SESSION ? BREAK: SESSION;
-            var currentTimeRemaining = nextStep.time;
-            
-            this.setState({
-                step: nextStep,
-                timeRemaining: (currentTimeRemaining < 10 ? "0" + currentTimeRemaining : currentTimeRemaining) + ":00"
-            });
+        let timeArr = this.state.timeRemaining.split(":");
+        let minutes = Number.parseInt(timeArr[0]);
+        let seconds = Number.parseInt(timeArr[1]);
 
+        if (minutes == 0 && seconds == 0) {
+            switch (this.state.label) {
+                case "Session":
+                    this.setState({
+                        label: "Break",
+                        timeRemaining: formatTime(this.state.breakTime)
+                    })
+                    break;
+                case "Break":
+                    this.setState({
+                        label: "Session",
+                        timeRemaining: formatTime(this.state.sessionTime)
+                    })
+            }
         } else {
             if(seconds == 0) {
                 seconds = 59;
@@ -65,71 +69,30 @@ class PomodoroClock extends React.Component {
             } else {
                 seconds -= 1;
             }
-    
-            minutes = minutes < 10 ? "0" + minutes: minutes;
-            seconds = seconds < 10 ? "0" + seconds: seconds;
-        
+
             this.setState({
-                timeRemaining: minutes + ":" + seconds
+                timeRemaining: formatTime(minutes, seconds)
             })
         }
     }
 
-    handleTimerSettings(step, increment) {
-
-        // let newLength;
-
-        // if(!this.state.timerRunning) {
-        //     if(step == SESSION) {
-        //         newLength = this.setTimeLength(this.state.sessionLength, increment);
-
-        //         this.setState({
-        //             sessionLength: newLength,
-        //         })
-
-        //     } else if(step == BREAK) {
-        //         newLength = this.setTimeLength(this.state.breakLength, increment);
-
-        //         this.setState({
-        //             breakLength: newLength
-        //         })
-        //     }
-
-        //     this.setState({
-        //         timeRemaining: (newLength < 10 ? "0" + newLength: newLength) + ":00"
-        //     })
-        // }
-
-
-
-    }
-
     handleReset() {
         this.setState({
-            timeRemaining: "25:00",
-            sessionLength: 25,
-            breakLength: 5,
-            step: SESSION,
-            timerRunning: false
+            timerRunning: false,
+            label: "Session",
+            sessionTime: 25,
+            breakTime: 5,
+            timeRemaining: formatTime(25)
         });
-    }
 
-    setTimeLength(value, increment) {
-        switch(value) {
-            case 1:
-                return increment ? value + 1: value;
-            case 60:
-                return increment ? value: value - 1;
-            default:
-                return increment ? value + 1: value - 1;
-        }
+        clearInterval(intervalId);
     }
 
     render() {
         return (
             <div id="app-container">
                 <div id="timer-display">
-                    <h2 id="timer-label">{this.state.step.label}</h2>
+                    <h2 id="timer-label">{this.state.label}</h2>
                     <p id="time-left">{this.state.timeRemaining}</p>
                 </div>
                 <div id="timer-controls">
@@ -137,12 +100,35 @@ class PomodoroClock extends React.Component {
                     <button id="reset" onClick={this.handleReset}>Reset</button>
                 </div>
                 <div id="steps">
-                    <PomodoroStep step={SESSION} onClick={(increment) => this.handleTimerSettings(SESSION, increment)}/>
-                    <PomodoroStep step={BREAK} onClick={(increment) => this.handleTimerSettings(BREAK, increment)}/>
+                    <PomodoroStep label="Session" length={this.state.sessionTime}/>
+                    <PomodoroStep label="Break" length={this.state.breakTime}/>
                 </div>
             </div>
         )
     }
+}
+
+function setTimeLength(value, increment) {
+    switch (value) {
+        case 1:
+            return increment ? value + 1 : value;
+        case 60:
+            return increment ? value : value - 1;
+        default:
+            return increment ? value + 1 : value - 1;
+    }
+}
+
+function formatTime(minutes, seconds = "00") {
+    if (minutes < 10 && minutes !== "00") {
+        minutes = "0" + minutes;
+    }
+
+    if (seconds < 10 && seconds !== "00") {
+        seconds = "0" + seconds;
+    }
+
+    return minutes + ":" + seconds;
 }
 
 ReactDOM.render(<PomodoroClock />, document.getElementById("app-root"));
