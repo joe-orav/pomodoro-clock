@@ -29,6 +29,7 @@ class PomodoroClock extends React.Component {
         this.handleTimerState = this.handleTimerState.bind(this);
         this.handleTimerUpdate = this.handleTimerUpdate.bind(this);
         this.handleTimerSettings = this.handleTimerSettings.bind(this);
+        this.handleReset = this.handleReset.bind(this);
     }
 
     handleTimerState() {
@@ -85,8 +86,17 @@ class PomodoroClock extends React.Component {
         }
     }
 
-    setTimeLength(value, increment) {
+    handleReset() {
+        this.setState({
+            timeRemaining: "25:00",
+            sessionLength: 25,
+            breakLength: 5,
+            step: SESSION,
+            timerRunning: false
+        });
+    }
 
+    setTimeLength(value, increment) {
         switch(value) {
             case 1:
                 return increment ? value + 1: value;
@@ -106,7 +116,7 @@ class PomodoroClock extends React.Component {
                 </div>
                 <div id="timer-controls">
                     <button id="start_stop" onClick={this.handleTimerState}>Start/Stop</button>
-                    <button id="reset">Reset</button>
+                    <button id="reset" onClick={this.handleReset}>Reset</button>
                 </div>
                 <div id="steps">
                     <PomodoroStep step={SESSION} stepLength={this.state.sessionLength} onClick={(increment) => this.handleTimerSettings(SESSION, increment)}/>
