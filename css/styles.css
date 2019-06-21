@@ -55,7 +55,7 @@ body {
 }
 
 .control-btn, .timer-btn {
-  background: rgba(135, 206, 235, 0.1);
+  background: rgba(135, 206, 235, 0);
   border: none;
   cursor: pointer;
 }

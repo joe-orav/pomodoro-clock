@@ -4,6 +4,9 @@ const BREAK = "Break";
 let intervalId;
 let alarmAudio;
 
+let appRoot = document.getElementById("app-root");
+// let colorLoopClassName = "color-loop-animation";
+
 const PomodoroStep = props => {
     var labelToLower = props.label.toLowerCase();
 
@@ -41,11 +44,13 @@ class PomodoroClock extends React.Component {
                 timerRunning: false
             });
             clearInterval(intervalId);
+            // appRoot.classList.remove(colorLoopClassName);
         } else {
             this.setState({
                 timerRunning: true
             });
             intervalId = setInterval(this.handleTimerUpdate, 1000);
+            // appRoot.classList.add(colorLoopClassName);
         }
     }
 
@@ -73,6 +78,11 @@ class PomodoroClock extends React.Component {
                         timeRemaining: formatTime(this.state.sessionTime)
                     })
             }
+
+            // appRoot.classList.remove(colorLoopClassName);
+            // colorLoopClassName = "color-loop-animation";
+            // appRoot.classList.add(colorLoopClassName);
+
         } else {
             if (seconds == 0) {
                 seconds = 59;
@@ -100,6 +110,7 @@ class PomodoroClock extends React.Component {
         });
 
         clearInterval(intervalId);
+        // appRoot.classList.remove("red-color-loop-animation", "color-loop-animation");
     }
 
     handleTimerSettings(step, lengthChange) {
@@ -158,6 +169,12 @@ function setTimeLength(length, lengthChange) {
 }
 
 function formatTime(minutes, seconds = "00") {
+    // if (minutes == 0 && seconds == 59) {
+    //     appRoot.classList.remove(colorLoopClassName);
+    //     colorLoopClassName = "red-color-loop-animation";
+    //     appRoot.classList.add(colorLoopClassName);
+    // }
+
     if (minutes < 10 && minutes !== "00") {
         minutes = "0" + minutes;
     }
@@ -169,4 +186,5 @@ function formatTime(minutes, seconds = "00") {
     return minutes + ":" + seconds;
 }
 
-ReactDOM.render(<PomodoroClock />, document.getElementById("app-root"));
+
+ReactDOM.render(<PomodoroClock />, appRoot);
