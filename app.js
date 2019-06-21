@@ -1,7 +1,8 @@
-let intervalId;
-
 const SESSION = "Session";
 const BREAK = "Break";
+
+let intervalId;
+let alarmAudio;
 
 const PomodoroStep = props => {
     var labelToLower = props.label.toLowerCase();
@@ -51,6 +52,11 @@ class PomodoroClock extends React.Component {
         let minutes = Number.parseInt(timeArr[0]);
         let seconds = Number.parseInt(timeArr[1]);
 
+        if (minutes == 0 && seconds == 1) {
+            alarmAudio.play();
+            alarmAudio.currentTime = 0;
+        }
+
         if (minutes == 0 && seconds == 0) {
             switch (this.state.label) {
                 case SESSION:
@@ -80,6 +86,9 @@ class PomodoroClock extends React.Component {
     }
 
     handleReset() {
+        alarmAudio.pause();
+        alarmAudio.currentTime = 0;
+
         this.setState({
             timerRunning: false,
             label: SESSION,
@@ -109,6 +118,10 @@ class PomodoroClock extends React.Component {
         }
     }
 
+    componentDidMount() {
+        alarmAudio = document.getElementById("beep");
+    }
+
     render() {
         return (
             <div id="app-container">
@@ -124,6 +137,7 @@ class PomodoroClock extends React.Component {
                     <PomodoroStep label={SESSION} length={this.state.sessionTime} onClick={(lengthChange) => this.handleTimerSettings(SESSION, lengthChange)} />
                     <PomodoroStep label={BREAK} length={this.state.breakTime} onClick={(lengthChange) => this.handleTimerSettings(BREAK, lengthChange)} />
                 </div>
+                <audio id="beep" src="soft-bells.mp3"></audio>
             </div>
         )
     }
