@@ -8,11 +8,13 @@ const PomodoroStep = props => {
     var labelToLower = props.label.toLowerCase();
 
     return (
-        <div>
-            <p id={labelToLower + "-label"}>{"Set " + props.label + " Length"}</p>
-            <button id={labelToLower + "-increment"} onClick={() => props.onClick(1)}>+</button>
-            <p id={labelToLower + "-length"}>{props.length}</p>
-            <button id={labelToLower + "-decrement"} onClick={() => props.onClick(-1)}>-</button>
+        <div className="time-length-container">
+            <p id={labelToLower + "-label"} className="control-label">{"Set " + props.label + " Length:"}</p>
+            <div className="time-length-controls">
+                <button id={labelToLower + "-increment"} className="control-btn" onClick={() => props.onClick(1)}>▲</button>
+                <p id={labelToLower + "-length"} className="time-length">{props.length}</p>
+                <button id={labelToLower + "-decrement"} className="control-btn" onClick={() => props.onClick(-1)}>▼</button>
+            </div>
         </div>
     )
 }
@@ -125,13 +127,14 @@ class PomodoroClock extends React.Component {
     render() {
         return (
             <div id="app-container">
+                <h1 id="app-header">Pomodoro Clock</h1>
                 <div id="timer-display">
                     <h2 id="timer-label">{this.state.label}</h2>
                     <p id="time-left">{this.state.timeRemaining}</p>
                 </div>
                 <div id="timer-controls">
-                    <button id="start_stop" onClick={this.handleTimerState}>Start/Stop</button>
-                    <button id="reset" onClick={this.handleReset}>Reset</button>
+                    <button id="start_stop" className="timer-btn" onClick={this.handleTimerState}>►❚❚</button>
+                    <button id="reset" className="timer-btn" onClick={this.handleReset}>↻</button>
                 </div>
                 <div id="steps">
                     <PomodoroStep label={SESSION} length={this.state.sessionTime} onClick={(lengthChange) => this.handleTimerSettings(SESSION, lengthChange)} />

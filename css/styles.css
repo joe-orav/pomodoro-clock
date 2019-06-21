@@ -1,0 +1,97 @@
+@font-face {
+  font-family: digital;
+  src: url(digital-7.ttf);
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+#app-root {
+  background-color: #87ceeb;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+
+#app-container {
+  height: 50%;
+  margin-top: 5%;
+  font-family: "Baloo Bhai", cursive;
+  text-align: center;
+}
+
+#app-header {
+  font-size: 3em;
+  margin-bottom: 15px;
+}
+
+#timer-display {
+  border: 1px solid #000;
+  border-radius: 25px;
+}
+
+#timer-label, #time-left {
+  margin: 0;
+}
+
+#timer-label {
+  font-size: 2em;
+  margin-top: 20px;
+}
+
+#time-left {
+  font-size: 5em;
+  font-family: digital, monospace;
+  margin-bottom: 20px;
+}
+
+#timer-controls {
+  margin-top: 10px;
+}
+
+.control-btn, .timer-btn {
+  background: rgba(135, 206, 235, 0.1);
+  border: none;
+  cursor: pointer;
+}
+
+.timer-btn {
+  margin: 5px;
+  font-size: 2em;
+  line-height: 30px;
+}
+
+.time-length-container {
+  display: flex;
+  justify-content: space-around;
+  font-size: 1.3em;
+}
+
+.control-label, .time-length, .time-length-controls {
+  display: inline-block;
+}
+
+.time-length {
+  padding: 0px 10px;
+  margin: 0;
+}
+
+.control-btn {
+  font-size: 1.1em;
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 0px 10px;
+  line-height: 30px;
+  outline: none;
+}
+
+.time-length-controls {
+  height: auto;
+  display: flex;
+  align-items: center;
+}
