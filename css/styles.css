@@ -63,8 +63,15 @@ body {
 
 .timer-btn {
   margin: 5px;
-  font-size: 2em;
-  line-height: 30px;
+  height: 40px;
+  width: 40px;
+}
+
+.timer-btn img {
+  display: block;
+  margin: auto;
+  height: auto;
+  max-width: 100%;
 }
 
 .time-length-container {
