@@ -1,8 +1,6 @@
 $(document).ready(function () {
     const RAINBOW_LOOP = "color-loop-animation";
     const RED_LOOP = "red-color-loop-animation";
-
-    console.log($('#start_stop').length);
     
     let activeColorLoopClass = RAINBOW_LOOP;
     let timerRunning = false;
