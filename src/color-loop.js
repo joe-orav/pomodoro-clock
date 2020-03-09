@@ -1,4 +1,6 @@
-$(document).ready(function () {
+import $ from "jquery-min";
+
+function colorLoopControl() {
     const RAINBOW_LOOP = "color-loop-animation";
     const RED_LOOP = "red-color-loop-animation";
     
@@ -6,12 +8,12 @@ $(document).ready(function () {
     let timerRunning = false;
 
     $("#start_stop").click(function () {
-        $("#app-root").toggleClass(activeColorLoopClass);
+        $("#root").toggleClass(activeColorLoopClass);
         timerRunning = !timerRunning;
     });
 
     $("#reset").click(function () {
-        $("#app-root").removeClass(RED_LOOP).removeClass(RAINBOW_LOOP);
+        $("#root").removeClass(RED_LOOP).removeClass(RAINBOW_LOOP);
         activeColorLoopClass = RAINBOW_LOOP;
         timerRunning = false;
     });
@@ -21,10 +23,10 @@ $(document).ready(function () {
 
         if(timerRunning) {
             if (timeLeft == 0) {
-                $("#app-root").removeClass(RAINBOW_LOOP).addClass(RED_LOOP);
+                $("#root").removeClass(RAINBOW_LOOP).addClass(RED_LOOP);
                 activeColorLoopClass = RED_LOOP;
             } else if(timeLeft > 0) {
-                $("#app-root").removeClass(RED_LOOP).addClass(RAINBOW_LOOP);
+                $("#root").removeClass(RED_LOOP).addClass(RAINBOW_LOOP);
                 activeColorLoopClass = RAINBOW_LOOP;
             }
         } else {
@@ -35,4 +37,6 @@ $(document).ready(function () {
             }
         }
     }, 100)
-});
+}
+
+export default colorLoopControl

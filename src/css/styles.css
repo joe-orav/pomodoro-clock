@@ -11,7 +11,7 @@ body {
   margin: 0;
 }
 
-#app-root {
+#root {
   background-color: #87ceeb;
   display: flex;
   justify-content: center;

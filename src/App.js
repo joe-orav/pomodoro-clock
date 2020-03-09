@@ -1,3 +1,8 @@
+import React from 'react';
+import pause from "./img/pause.png";
+import play from "./img/play.png";
+import reload from "./img/reload.png";
+
 const SESSION = "Session";
 const BREAK = "Break";
 
@@ -131,8 +136,8 @@ class PomodoroClock extends React.Component {
                     <p id="time-left">{this.state.timeRemaining}</p>
                 </div>
                 <div id="timer-controls">
-                    <button id="start_stop" className="timer-btn" onClick={this.handleTimerState}><img src={this.state.timerRunning ? "./img/pause.png" : "./img/play.png"}/></button>
-                    <button id="reset" className="timer-btn" onClick={this.handleReset}><img src="./img/reload.png" /></button>
+                    <button id="start_stop" className="timer-btn" onClick={this.handleTimerState}><img src={this.state.timerRunning ? pause : play}/></button>
+                    <button id="reset" className="timer-btn" onClick={this.handleReset}><img src={reload} /></button>
                 </div>
                 <div id="steps">
                     <PomodoroStep label={SESSION} length={this.state.sessionTime} onClick={(lengthChange) => this.handleTimerSettings(SESSION, lengthChange)} />
@@ -167,4 +172,4 @@ function formatTime(minutes, seconds = "00") {
     return minutes + ":" + seconds;
 }
 
-ReactDOM.render(<PomodoroClock />, document.getElementById("app-root"));
+export default PomodoroClock;
