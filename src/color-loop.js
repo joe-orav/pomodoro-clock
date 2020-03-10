@@ -22,7 +22,7 @@ function colorLoopControl() {
         let timeLeft = parseInt($("#time-left").text());
 
         if(timerRunning) {
-            if (timeLeft == 0) {
+            if (timeLeft === 0) {
                 $("#root").removeClass(RAINBOW_LOOP).addClass(RED_LOOP);
                 activeColorLoopClass = RED_LOOP;
             } else if(timeLeft > 0) {
@@ -30,7 +30,7 @@ function colorLoopControl() {
                 activeColorLoopClass = RAINBOW_LOOP;
             }
         } else {
-            if (timeLeft == 0) {
+            if (timeLeft === 0) {
                 activeColorLoopClass = RED_LOOP;
             } else if(timeLeft > 0) {
                 activeColorLoopClass = RAINBOW_LOOP;

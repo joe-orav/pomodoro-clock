@@ -45,9 +45,10 @@ body {
 }
 
 #time-left {
-  font-size: 5em;
+  font-size: 75px;
   font-family: digital, monospace;
   margin-bottom: 20px;
+  line-height: 74px;
 }
 
 #timer-controls {

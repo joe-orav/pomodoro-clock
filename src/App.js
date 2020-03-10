@@ -59,12 +59,12 @@ class PomodoroClock extends React.Component {
         let minutes = parseInt(timeArr[0]);
         let seconds = parseInt(timeArr[1]);
 
-        if (minutes == 0 && seconds == 1) {
+        if (minutes === 0 && seconds === 1) {
             alarmAudio.play();
             alarmAudio.currentTime = 0;
         }
 
-        if (minutes == 0 && seconds == 0) {
+        if (minutes === 0 && seconds === 0) {
             switch (this.state.label) {
                 case SESSION:
                     this.setState({
@@ -77,10 +77,13 @@ class PomodoroClock extends React.Component {
                         label: SESSION,
                         timeRemaining: formatTime(this.state.sessionTime)
                     })
+                    break;
+                default:
+                    break;
             }
 
         } else {
-            if (seconds == 0) {
+            if (seconds === 0) {
                 seconds = 59;
                 minutes -= 1;
             } else {
@@ -113,12 +116,15 @@ class PomodoroClock extends React.Component {
                 case SESSION:
                     this.setState({
                         sessionTime: setTimeLength(this.state.sessionTime, lengthChange),
-                    }, () => this.setState({ timeRemaining: this.state.label == SESSION ? formatTime(this.state.sessionTime) : this.state.timeRemaining }));
+                    }, () => this.setState({ timeRemaining: this.state.label === SESSION ? formatTime(this.state.sessionTime) : this.state.timeRemaining }));
                     break;
-                case "Break":
+                case BREAK:
                     this.setState({
                         breakTime: setTimeLength(this.state.breakTime, lengthChange),
-                    }, () => this.setState({ timeRemaining: this.state.label == BREAK ? formatTime(this.state.breakTime) : this.state.timeRemaining }));
+                    }, () => this.setState({ timeRemaining: this.state.label === BREAK ? formatTime(this.state.breakTime) : this.state.timeRemaining }));
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -136,8 +142,8 @@ class PomodoroClock extends React.Component {
                     <p id="time-left">{this.state.timeRemaining}</p>
                 </div>
                 <div id="timer-controls">
-                    <button id="start_stop" className="timer-btn" onClick={this.handleTimerState}><img src={this.state.timerRunning ? pause : play}/></button>
-                    <button id="reset" className="timer-btn" onClick={this.handleReset}><img src={reload} /></button>
+                    <button id="start_stop" className="timer-btn" onClick={this.handleTimerState}><img src={this.state.timerRunning ? pause : play} alt={this.state.timerRunning ? "pause" : "play"} /></button>
+                    <button id="reset" className="timer-btn" onClick={this.handleReset}><img src={reload} alt="reset" /></button>
                 </div>
                 <div id="steps">
                     <PomodoroStep label={SESSION} length={this.state.sessionTime} onClick={(lengthChange) => this.handleTimerSettings(SESSION, lengthChange)} />
