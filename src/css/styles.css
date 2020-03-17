@@ -3,7 +3,7 @@
   src: url(digital-7.ttf);
 }
 
-html, body {
+html, body, #root {
   height: 100%;
 }
 
@@ -11,17 +11,16 @@ body {
   margin: 0;
 }
 
-#root {
+#app-container {
+  font-family: "Baloo Bhai", cursive;
   background-color: #87ceeb;
+  height: 100%;
   display: flex;
   justify-content: center;
-  height: 100%;
 }
 
-#app-container {
+#app {
   height: 50%;
-  margin-top: 5%;
-  font-family: "Baloo Bhai", cursive;
   text-align: center;
 }
 
@@ -77,12 +76,16 @@ body {
 
 .time-length-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   font-size: 1.3em;
 }
 
 .control-label, .time-length, .time-length-controls {
   display: inline-block;
+}
+
+.length-num-ctr {
+  width: 50px;
 }
 
 .time-length {
