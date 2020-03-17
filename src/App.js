@@ -28,7 +28,9 @@ const PomodoroStep = props => {
             <p id={labelToLower + "-label"} className="control-label">{"Set " + props.label + " Length:"}</p>
             <div className="time-length-controls">
                 <button id={labelToLower + "-increment"} className="control-btn" onClick={() => props.onClick(1)} disabled={props.length >= 60}>▲</button>
-                <p id={labelToLower + "-length"} className="time-length">{props.length}</p>
+                <div className="length-num-ctr">
+                    <p id={labelToLower + "-length"} className="time-length">{props.length}</p>
+                </div>
                 <button id={labelToLower + "-decrement"} className="control-btn" onClick={() => props.onClick(-1)} disabled={props.length <= 1}>▼</button>
             </div>
         </div>
