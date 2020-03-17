@@ -57,15 +57,15 @@ function reducer(state, action) {
             if (state.timeRemaining === "00:00") {
                 let newLabel;
 
-                if(state.label === SESSION) {
+                if (state.label === SESSION) {
                     newLabel = BREAK;
-                    newTimeRemaining = `${state.breakTime < 10 ? "0":""}${state.breakTime}:00`
-                } else if(state.label === BREAK) {
+                    newTimeRemaining = `${state.breakTime < 10 ? "0" : ""}${state.breakTime}:00`
+                } else if (state.label === BREAK) {
                     newLabel = SESSION;
-                    newTimeRemaining = `${state.sessionTime < 10 ? "0":""}${state.sessionTime}:00`
+                    newTimeRemaining = `${state.sessionTime < 10 ? "0" : ""}${state.sessionTime}:00`
                 }
 
-                return {...state, label: newLabel, timeRemaining: newTimeRemaining}
+                return { ...state, label: newLabel, timeRemaining: newTimeRemaining }
 
             } else {
                 const [minutes, seconds] = state.timeRemaining.split(":");
@@ -101,6 +101,23 @@ function PomodoroClockHook() {
         }
     }
 
+    function setAppBackground() {
+        let backgroundClass = "";
+
+        const [minutes, seconds] = state.timeRemaining.split(":");
+        let timeInMilliseconds = ((parseInt(minutes) * 60 * 1000) + (parseInt(seconds) * 1000) - 1000);
+
+        if (state.timerRunning) {
+            if (timeInMilliseconds < 10000) {
+                backgroundClass = "red-color-loop-animation"
+            } else {
+                backgroundClass = "color-loop-animation"
+            }
+        }
+
+        return backgroundClass
+    }
+
     useEffect(() => {
         let intervalId;
 
@@ -116,26 +133,28 @@ function PomodoroClockHook() {
     }, [state.timerRunning])
 
     useEffect(() => {
-        if(state.timeRemaining === "00:00") {
+        if (state.timeRemaining === "00:00") {
             alarmAudio.current.play();
             alarmAudio.current.currentTime = 0;
         }
     }, [state.timeRemaining])
 
     return (
-        <div id="app-container">
-            <h1 id="app-header">Pomodoro Clock</h1>
-            <div id="timer-display">
-                <h2 id="timer-label">{state.label}</h2>
-                <p id="time-left">{state.timeRemaining}</p>
-            </div>
-            <div id="timer-controls">
-                <button id="start_stop" className="timer-btn" onClick={() => dispatch({ type: TOGGLE_TIMER })}><img src={state.timerRunning ? pause : play} alt={state.timerRunning ? "pause" : "play"} /></button>
-                <button id="reset" className="timer-btn" onClick={() => dispatch({ type: RESET_CLOCK })}><img src={reload} alt="reset" /></button>
-            </div>
-            <div id="steps">
-                <PomodoroStep label={SESSION} length={state.sessionTime} onClick={(lengthChange) => handleStepLength(SESSION, lengthChange)} />
-                <PomodoroStep label={BREAK} length={state.breakTime} onClick={(lengthChange) => handleStepLength(BREAK, lengthChange)} />
+        <div id="app-container" class={setAppBackground()}>
+            <div id="app">
+                <h1 id="app-header">Pomodoro Clock</h1>
+                <div id="timer-display">
+                    <h2 id="timer-label">{state.label}</h2>
+                    <p id="time-left">{state.timeRemaining}</p>
+                </div>
+                <div id="timer-controls">
+                    <button id="start_stop" className="timer-btn" onClick={() => dispatch({ type: TOGGLE_TIMER })}><img src={state.timerRunning ? pause : play} alt={state.timerRunning ? "pause" : "play"} /></button>
+                    <button id="reset" className="timer-btn" onClick={() => dispatch({ type: RESET_CLOCK })}><img src={reload} alt="reset" /></button>
+                </div>
+                <div id="steps">
+                    <PomodoroStep label={SESSION} length={state.sessionTime} onClick={(lengthChange) => handleStepLength(SESSION, lengthChange)} />
+                    <PomodoroStep label={BREAK} length={state.breakTime} onClick={(lengthChange) => handleStepLength(BREAK, lengthChange)} />
+                </div>
             </div>
             <audio id="beep" src="soft-bells.mp3" ref={alarmAudio}></audio>
         </div>
