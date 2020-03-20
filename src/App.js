@@ -86,7 +86,7 @@ function reducer(state, action) {
     }
 }
 
-function PomodoroClockHook() {
+function PomodoroClock() {
     const [state, dispatch] = useReducer(reducer, initialState)
     const alarmAudio = useRef(null);
 
@@ -163,4 +163,4 @@ function PomodoroClockHook() {
     )
 }
 
-export default PomodoroClockHook;
+export default PomodoroClock;
